@@ -1,6 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Layout from '../Components/Layout';
 import styles from '../styles/Home.module.css';
 
 function Profile() {
@@ -25,10 +28,13 @@ function Profile() {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <>
+    <div className="homepage">
+      <Layout />
       <div>{commodities}</div>
-      <input type="text" />
-    </>
+      <div className="buy-button">
+        <button className="button-29">BUY</button>
+      </div>
+    </div>
   );
 }
 export default Profile;
