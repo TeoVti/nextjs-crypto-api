@@ -9,8 +9,17 @@ export default function Header() {
 
   return (
     <>
-      <Link href="#">
-        <a>Favorites</a>
+      <Link href="/">
+        <a>HODL</a>
+      </Link>
+      <Link href="/">
+        <a>HOME</a>
+      </Link>
+      <Link href="/crypto">
+        <a>CRYPTO</a>
+      </Link>
+      <Link href="/favorites">
+        <a>FAVORITES</a>
       </Link>
     </>
   );
