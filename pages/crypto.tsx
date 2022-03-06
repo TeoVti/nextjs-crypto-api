@@ -1,13 +1,13 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
 import Layout from '../Components/Layout';
 
 export default function Favorites() {
   const [data, setData] = useState(null);
-  const [coinUrl, setCoinUrl] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [coins, setCoins] = useState([] as any[]);
   const [inputText, setInputText] = useState('');
+  const [priceChanges, setBla] = useState('change_24h');
 
   useEffect(() => {
     setLoading(true);
@@ -16,10 +16,7 @@ export default function Favorites() {
       .then((data) => {
         setLoading(false);
         setData(data);
-        const coins = data.data.attributes.cryptocoins;
-        setCoinUrl(data.data.attributes.cryptocoins.logo);
-        console.log(coinUrl);
-        setCoins(coins);
+        setCoins(data.data.attributes.cryptocoins);
       });
   }, []);
 
@@ -27,7 +24,7 @@ export default function Favorites() {
     var lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
-
+  console.log(coins);
   const filteredData = coins.filter((el: any) => {
     //if no input, return the original
     if (inputText === '') {
@@ -39,17 +36,28 @@ export default function Favorites() {
     }
   });
 
+  const handleChange = (event: any) => {
+    setBla(event.target.value);
+  };
+  console.log(priceChanges);
+
   if (isLoading) return <p>Loading...</p>;
   return (
     <div>
       <Layout />
       <div>
+        <form>
+          <select value={priceChanges} onChange={handleChange}>
+            <option value="change_24h">1D</option>
+            <option value="change_1w">7D</option>
+            <option value="change_1m">30D</option>
+          </select>
+        </form>
         <input
           type="text"
           placeholder="Search Cryptocoin"
           onChange={inputHandler}
         ></input>
-        {console.log(coins)}
         <div>
           {filteredData.map((item) => (
             <div key={item.id} className="crypto-card">
@@ -60,6 +68,40 @@ export default function Favorites() {
                 alt="Card image"
               ></img>
               <div>{item.attributes.avg_price}</div>
+              <div>{item.attributes.symbol}</div>
+              {priceChanges == 'change_24h' ? (
+                <div
+                  className={
+                    item.attributes.change_24h.includes('-')
+                      ? 'negative-price'
+                      : 'positive-price'
+                  }
+                >
+                  {item.attributes.change_24h}%
+                </div>
+              ) : priceChanges == 'change_1w' ? (
+                <div
+                  className={
+                    item.attributes.change_1w.includes('-')
+                      ? 'negative-price'
+                      : 'positive-price'
+                  }
+                >
+                  {item.attributes.change_1w}%
+                </div>
+              ) : priceChanges == 'change_1m' ? (
+                <div
+                  className={
+                    item.attributes.change_1m.includes('-')
+                      ? 'negative-price'
+                      : 'positive-price'
+                  }
+                >
+                  {item.attributes.change_1m}%
+                </div>
+              ) : (
+                ''
+              )}
             </div>
           ))}
         </div>
