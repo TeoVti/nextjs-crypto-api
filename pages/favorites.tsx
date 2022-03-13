@@ -1,10 +1,10 @@
 import Layout from '../Components/Layout';
 
-export default function Favourites() {
+export default function Favorites() {
   return (
     <div>
       <Layout />
-      Favourites
+      Favorites
     </div>
   );
 }
